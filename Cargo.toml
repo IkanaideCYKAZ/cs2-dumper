@@ -19,6 +19,7 @@ phf = { version = "0.13", features = ["macros"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 simplelog = "0.12"
+windows = { version = "0.61", features = ["Win32_Storage_FileSystem"] }
 
 [target.'cfg(windows)'.dependencies]
 memflow-native = { git = "https://github.com/memflow/memflow-native" }
@@ -32,3 +33,10 @@ opt-level = 3
 [profile.release]
 lto = true
 strip = true
+
+# Static library linked into LWx (the cheat calls lwx_dump_offsets directly).
+# The CLI binary (src/main.rs) is unaffected.
+[lib]
+name = "cs2_dumper"
+crate-type = ["staticlib"]
+path = "src/lib.rs"
